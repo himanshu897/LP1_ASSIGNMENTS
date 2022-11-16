@@ -1,6 +1,6 @@
 import java.util.Scanner;
 
-public class sjf {
+public class Main {
     public static void main(String args[])
     {
         Scanner sc= new Scanner(System.in);
@@ -19,9 +19,9 @@ public class sjf {
 
         for(int i=0;i<n;i++)
         {
-            System.out.println("enter process "+(i+1)+"arrival time: ");
+            System.out.println("enter process "+(i+1)+" arrival time: ");
             at[i]=sc.nextInt();
-            System.out.println("enter process "+(i+1)+"burst time time: ");
+            System.out.println("enter process "+(i+1)+" burst time time: ");
             bt[i]=sc.nextInt();
             pid[i]=i+1;
             f[i]=0;
@@ -30,7 +30,7 @@ public class sjf {
         {
             int c=n,min=999;
             if(tot==n)
-            break;
+                break;
             for (int i=0;i<n;i++)
             {
                 if((at[i]<=st) && (f[i]==0) &&(bt[i]<min))
@@ -40,14 +40,13 @@ public class sjf {
                 }
             }
             if (c==n)
-            st++;
+                st++;
             else{
                 ct[c]=st+bt[c];
                 st+=bt[c];
                 tat[c]=ct[c]-at[c];
                 wt[c]=tat[c]-bt[c];
                 f[c]=1;
-                pid[tot]=c+1;
                 tot++;
             }
         }
@@ -57,17 +56,11 @@ public class sjf {
         {
             avgwt+=wt[i];
             avgtat+=tat[i];
-            System.out.println(pid[i]+"\t"+at[i]+"\t"+bt[i]+"\t"+ct[i]+"\t"+tat[i]+"\t"+wt[i]);
+            System.out.println(pid[i]+"   \t"+at[i]+"   \t"+bt[i]+"   \t"+ct[i]+"   \t"+tat[i]+"   \t"+wt[i]);
         }
-        System.out.println("\n average turn around time is"+(float)(avgtat/n));
-        System.out.println("\n average waiting time is"+(float)(avgwt/n));
+        System.out.println("\n average turn around time is "+(float)(avgtat/n));
+        System.out.println("\n average waiting time is "+(float)(avgwt/n));
         sc.close();
-        for (int i=0;i<n;i++)
-        {
-            System.out.println(pid[i] + " ");
-        }
-        
-
 
     }
 }
