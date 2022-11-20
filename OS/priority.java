@@ -1,106 +1,66 @@
-// Java program for implementation of FCFS
-// scheduling
-import java.util.*;
+import java.util.Scanner;
 
-class Process
-{
-    int pid; // Process ID
-    int bt; // CPU Burst time required
-    int priority; // Priority of this process
-    Process(int pid, int bt, int priority)
-    {
-        this.pid = pid;
-        this.bt = bt;
-        this.priority = priority;
-    }
-    public int prior() {
-        return priority;
-    }
-}
+public class Priority {
 
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        System.out.println("Enter the number of processes:");
+        int n = sc.nextInt();
+        int i, pos=0, temp;
 
-public class Main
-{
+        System.out.println("Enter the burst times:");
+        int p[] = new int[n];
+        int bt[] = new int[n]; //burst time
+        int pt[] = new int[n]; //priority time
+        int wt[] = new int[n]; //waiting time
+        int tat[] = new int[n]; //turn-around time
 
-    // Function to find the waiting time for all
-// processes
-    public void findWaitingTime(Process proc[], int n,
-                                int wt[])
-    {
-
-        // waiting time for first process is 0
-        wt[0] = 0;
-
-        // calculating waiting time
-        for (int i = 1; i < n ; i++ )
-            wt[i] = proc[i - 1].bt + wt[i - 1] ;
-    }
-
-    // Function to calculate turn around time
-    public void findTurnAroundTime( Process proc[], int n,
-                                    int wt[], int tat[])
-    {
-        // calculating turnaround time by adding
-        // bt[i] + wt[i]
-        for (int i = 0; i < n ; i++)
-            tat[i] = proc[i].bt + wt[i];
-    }
-
-    // Function to calculate average time
-    public void findavgTime(Process proc[], int n)
-    {
-        int wt[] = new int[n], tat[] = new int[n], total_wt = 0, total_tat = 0;
-
-        // Function to find waiting time of all processes
-        findWaitingTime(proc, n, wt);
-
-        // Function to find turn around time for all processes
-        findTurnAroundTime(proc, n, wt, tat);
-
-        // Display processes along with all details
-        System.out.print("\nProcesses Burst time Waiting time Turn around time\n");
-
-        // Calculate total waiting time and total turn
-        // around time
-        for (int i = 0; i < n; i++)
-        {
-            total_wt = total_wt + wt[i];
-            total_tat = total_tat + tat[i];
-            System.out.print(" " + proc[i].pid + "   \t\t  " + proc[i].bt + "     \t " + wt[i] + "      \t\t " + tat[i] + "\n");
+        for (i = 0; i < n; i++) {
+            p[i] = i + 1;
+            bt[i] = sc.nextInt();
         }
 
-        System.out.print("\nAverage waiting time = "
-                +(float)total_wt / (float)n);
-        System.out.print("\nAverage turn around time = "+(float)total_tat / (float)n);
-    }
-
-    public void priorityScheduling(Process proc[], int n)
-    {
-
-        // Sort processes by priority
-        Arrays.sort(proc, new Comparator<Process>() {
-            @Override
-            public int compare(Process a, Process b) {
-                return b.prior() - a.prior();
+        System.out.println("Enter priority time:");
+        for (i = 0; i < n; i++) {
+            pt[i] = sc.nextInt();
+        }
+        
+        // checking the priority
+        for (i = 0; i < n; i++) {
+            pos = i;
+            for (int j = i + 1; j < n; j++) {
+                if (pt[j] < pt[pos]) {
+                    pos = j;
+                }
             }
-        });
-        System.out.print("Order in which processes gets executed \n");
-        for (int i = 0 ; i < n; i++)
-            System.out.print(proc[i].pid + " ") ;
+            
+            //arranging gaant chart according to process , burts time and priority
+            temp = pt[pos];
+            pt[pos] = pt[i];
+            pt[i] = temp;
 
-        findavgTime(proc, n);
-    }
+            temp = p[pos];
+            p[pos] = p[i];
+            p[i] = temp;
 
-    // Driver code
-    public static void main(String[] args)
-    {
-        Main ob=new Main();
-        int n = 3;
-        Process proc[] = new Process[n];
-        proc[0] = new Process(1, 10, 2);
-        proc[1] = new Process(2, 5, 0);
-        proc[2] = new Process(3, 8, 1);
-        ob.priorityScheduling(proc, n);
+            temp = bt[pos];
+            bt[pos] = bt[i];
+            bt[i] = temp;
+        }
+
+        wt[0] = 0;
+        for (i = 1; i < n; i++) {
+            //calculating waiting time
+            wt[i] = wt[i - 1] + bt[i - 1];
+        }
+
+        System.out.println("Process\tBT\tpriority\twaiting time\tTAT");
+
+        for (i = 0; i < n; i++) {
+            //calculating turn araound time
+            tat[i] = bt[i] + wt[i];
+            System.out.println(p[i] + "\t" + bt[i] + "\t" + pt[i] + "\t\t" + wt[i] + "\t\t" + tat[i]);
+        }
+
     }
 }
-
