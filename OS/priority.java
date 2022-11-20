@@ -29,7 +29,7 @@ public class Priority {
         for (i = 0; i < n; i++) {
             pos = i;
             for (int j = i + 1; j < n; j++) {
-                if (pt[j] < pt[pos]) {
+                if (pt[j] > pt[pos]) {
                     pos = j;
                 }
             }
